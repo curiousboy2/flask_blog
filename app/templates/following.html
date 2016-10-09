@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block page_content %}
+<p>你关注了这些人：</p>
+<ul>
+{% for d in stars_dict %}
+<li>{{ d['name'].username }} \\\\\////// {{ d['timestamp'] }}</li>
+{% endfor %}
+</ul>
+{% endblock %}
+

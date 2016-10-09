@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}
+unconfirm
+{% endblock %}
+
+{% block page_content %}
+
+hello,{{ username }}
+you haven't confirmed yet,please click your email first to confirm
+resend confirmed email <a href="{{ url_for('auth.reconfirm',username=username) }}">click here</a>
+{% endblock %}

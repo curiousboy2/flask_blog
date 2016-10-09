@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block page_content %}
+
+<p>{{ user.username }}的粉丝有：</p>
+<ul>
+{% for d in fans_dict %}
+<li>{{ d['fan_name'].username }}\\\\\////// {{ d['timestamp'] }}</li>
+{% endfor %}
+</ul>
+
+{% endblock %}

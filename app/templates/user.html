@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as macros %}
+{% block page_content -%}
+<div class="page-header">
+<h1>{{ user.username }}</h1>
+
+    <img src="{{ url_for('static',filename='picture/{}.jpg'.format(filename)) }}" width="40px" height="50px"/>
+{% if user.name or user.location %}
+<p>
+{% if user.name %}{{ user.name }}{% endif %}
+{% if user.location %}
+From <a href="http://map.baidu.com/?q={{ user.location }}">
+{{ user.location }}
+</a>
+{% endif %}
+</p>
+{% endif %}
+{% if current_user.is_administrator() %}
+<p><a href="mailto:{{ user.email }}">{{ user.email }}</a></p>
+<p><a href="{{ url_for('main.edit_profile_admin',id=user.id) }}">edite profile(for admin)</a></p>
+{% endif %}
+{% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
+<p>
+Member since {{ moment(user.member_since).format('LLL') }}.
+    <br>
+Last seen {{ moment(user.last_seen).fromNow() }}.
+    <br>
+现在时间： {{ moment(utctime).format('LLL') }}.
+</p>
+<p>{{ user.posts.count() }} blog posts.</p>
+    {% if user==current_user %}
+        <a href="{{ url_for('main.edit_profile') }}">编辑 profile</a>
+    {% endif %}
+</div>
+
+{% if user!=current_user %}
+{% if current_user.can(Permission.FOLLOW) and current_user.is_following(user) %}
+<a href="{{ url_for('main.unfollow',username=user.username) }}" class="btn btn-default">
+unfollow
+    </a>
+{% else %}
+<a href="{{ url_for('main.follow',username=user.username) }}" class="btn btn-primary">
+follow
+    </a>
+{% endif %}
+{% endif %}
+<a href="{{ url_for('main.followers',username=user.username) }}">followers:<span class="badge">{{ user.followers.count() }}</span></a>
+<a href="{{ url_for('main.following',username=user.username) }}">following: <span class="badge">{{ user.followed.count() }}</span></a>
+
+<!--{% include '_post.html' %}-->
+</div>
+{% include '_post.html' %}
+<div class="pagination",position="middle">
+{{ macros.pagination_widget(pagination, 'main.profile',username=user.username) }}
+</div>
+{% endblock page_content -%}

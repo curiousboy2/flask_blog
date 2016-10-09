@@ -1,0 +1,2 @@
+-r commom.txt
+ForgeryPy==0.1
